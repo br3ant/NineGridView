@@ -95,7 +95,7 @@ public class NineGridView extends ViewGroup {
         int childrenCount = mImageInfo.size();
         for (int i = 0; i < childrenCount; i++) {
             ImageView childrenView = (ImageView) getChildAt(i);
-            
+
             int rowNum = i / columnCount;
             int columnNum = i % columnCount;
             int left = (gridWidth + gridSpacing) * columnNum + getPaddingLeft();
@@ -103,7 +103,21 @@ public class NineGridView extends ViewGroup {
             int right = left + gridWidth;
             int bottom = top + gridHeight;
             childrenView.layout(left, top, right, bottom);
-            
+
+            if (mImageLoader != null) {
+                mImageLoader.onDisplayImage(getContext(), childrenView, mImageInfo.get(i).thumbnailUrl);
+            }
+        }
+    }
+
+    /**
+     * 加载图片(在onLayout调用加载图片，使用Glide时，onLayout被无限调用)
+     */
+    private void loadImage() {
+        if (mImageInfo == null) return;
+        int childrenCount = mImageInfo.size();
+        for (int i = 0; i < childrenCount; i++) {
+            ImageView childrenView = (ImageView) getChildAt(i);
             if (mImageLoader != null) {
                 mImageLoader.onDisplayImage(getContext(), childrenView, mImageInfo.get(i).thumbnailUrl);
             }
@@ -169,6 +183,7 @@ public class NineGridView extends ViewGroup {
         }
         mImageInfo = imageInfo;
         requestLayout();
+        loadImage();
     }
 
     /** 获得 ImageView 保证了 ImageView 的重用 */
