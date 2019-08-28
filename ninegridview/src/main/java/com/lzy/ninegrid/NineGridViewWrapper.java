@@ -93,7 +93,7 @@ public class NineGridViewWrapper extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        setImageDrawable(null);
+//        setImageDrawable(null);
     }
 
     public int getMoreNum() {
